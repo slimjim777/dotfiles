@@ -51,7 +51,7 @@ NeoBundle 'hhff/SpacegrayEighties.vim'
 call neobundle#end()
 filetype  plugin on
 filetype  indent on
-set t_Co=256
+" set t_Co=256
 syntax on
 set autoindent                         " Copy indent from current line
 set autoread                           " Read open files again when changed outside Vim
@@ -100,10 +100,10 @@ endif
 
 syntax enable
 set background=dark
-colorscheme SpacegrayEighties
-let g:solarized_termcolors = &t_Co
-let g:solarized_termtrans = 1
-let g:solarized_termcolors=256
+colorscheme solarized
+" let g:solarized_termcolors = &t_Co
+" let g:solarized_termtrans = 1
+let g:solarized_termcolors=16
 let g:solarized_visibility = "high"
 let g:solarized_contrast = "high"
 let g:mustache_abbreviations = 1
