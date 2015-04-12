@@ -19,6 +19,7 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'JarrodCTaylor/vim-256-color-schemes'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'ervandew/supertab'
 NeoBundle 'pangloss/vim-javascript'
@@ -42,12 +43,12 @@ NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundle 'wellle/targets.vim'
 NeoBundle 'thinca/vim-qfreplace'
 NeoBundle 'junegunn/vim-easy-align'
-NeoBundle '~/dotfiles/vim/my-plugins/nerd-ack', {'type': 'nosync'}
-NeoBundle '~/dotfiles/vim/my-plugins/tmux-navigator', {'type': 'nosync'}
-NeoBundle '~/dotfiles/vim/my-plugins/vim-ack', {'type': 'nosync'}
-NeoBundle '~/dotfiles/vim/my-plugins/vim-grep-quickfix', {'type': 'nosync'}
-NeoBundle '~/dotfiles/vim/my-plugins/vim-wiki-links', {'type': 'nosync'}
-NeoBundle 'hhff/SpacegrayEighties.vim'
+NeoBundle 'othree/html5-syntax.vim'
+" NeoBundle '~/dotfiles/vim/my-plugins/nerd-ack', {'type': 'nosync'}
+" NeoBundle '~/dotfiles/vim/my-plugins/tmux-navigator', {'type': 'nosync'}
+" NeoBundle '~/dotfiles/vim/my-plugins/vim-ack', {'type': 'nosync'}
+" NeoBundle '~/dotfiles/vim/my-plugins/vim-grep-quickfix', {'type': 'nosync'}
+" NeoBundle '~/dotfiles/vim/my-plugins/vim-wiki-links', {'type': 'nosync'}
 call neobundle#end()
 filetype  plugin on
 filetype  indent on
@@ -86,8 +87,8 @@ set showbreak=↪\
 set synmaxcol=256
 set scrolloff=3
 set clipboard=unnamed
-set colorcolumn=80                     " JMJ - show column 80
-set number                             " JMJ - show line numbers
+set colorcolumn=80                     " Show column 80
+set number                             " Show line numbers
 au BufNewFile,BufRead *.json set ft=javascript
 set pastetoggle=<F3>
 set nofoldenable
@@ -101,8 +102,6 @@ endif
 syntax enable
 set background=dark
 colorscheme solarized
-" let g:solarized_termcolors = &t_Co
-" let g:solarized_termtrans = 1
 let g:solarized_termcolors=16
 let g:solarized_visibility = "high"
 let g:solarized_contrast = "high"
@@ -112,12 +111,6 @@ if has("autocmd")
   au BufNewFile,BufRead *.{mustache,handlebars,hbs}{,.erb} set filetype=html syntax=mustache | runtime! ftplugin/mustache.vim ftplugin/mustache*.vim ftplugin/mustache/*.vim
 endif
 
-:iabbr teh the
-:iabbr condole console
-nnoremap <Left> :vertical resize +1<CR>
-nnoremap <Right> :vertical resize -1<CR>
-nnoremap <Up> :resize +1<CR>
-nnoremap <Down> :resize -1<CR>
 set laststatus=2                                    " Make the second to last line of vim our status line
 let g:airline#extensions#tabline#enabled = 1        " JMJ - show tabs
 nnoremap <Leader>fr :call VisualFindAndReplace()<CR>
@@ -154,16 +147,15 @@ let g:ctrlp_buffer_func = { 'enter': 'MyCtrlPMappings' }
 func! MyCtrlPMappings()
     nnoremap <buffer> <silent> <F6> :call <sid>DeleteBuffer()<cr>
 endfunc
-set tags=./.ctags,.ctags;
+set tags=./tags,ctags;
 let NERDTreeIgnore = ['\.pyc$']
 let g:NERDTreeMapJumpNextSibling = ''
 let g:NERDTreeMapJumpPrevSibling = ''
-let g:jedi#use_tabs_not_buffers = 1     " Use buffers not tabs
-let g:jedi#popup_on_dot = 0
-let g:jedi#rename_command = "<leader>rn"
+let g:jedi#use_tabs_not_buffers = 1
+" let g:jedi#popup_on_dot = 0
+" let g:jedi#rename_command = "<leader>rn"
 let g:ctrlp_reuse_window = 'startify'
 let g:startify_change_to_dir = 0
-hi StartifyHeader ctermfg=124
 let g:startify_show_files = 1
 let g:startify_show_files_number = 10
 let g:startify_bookmarks = [ '~/.vimrc' ]
@@ -182,28 +174,27 @@ let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_exclude_filetypes = ['help', 'nerdtree']
 let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=238
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=249
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['red',         'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ]
 let g:rbpt_max = 16
 let g:rbpt_loadcmd_toggle = 0
+
+" Cycle through buffers
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-o> :bprevious<CR>
+
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+" Block indent without losing selection
+vnoremap < <gv
+vnoremap > >gv
+
+" easier formatting of paragraphs (wrap to page width)
+vmap Q gq
+nmap Q gqap
+
 nnoremap <Esc><Esc> :nohlsearch<CR>
 function! RenewTagsFile()
     exe 'silent !rm -rf .ctags'
@@ -347,6 +338,7 @@ noremap <Leader>sp :set spell spelllang=en_us<CR>
 nnoremap <Leader>tb :TagbarToggle<CR>
 map <Leader>a :Ack!<space>
 map <Leader>d :NERDTreeToggle<CR>
+map <C-e> :NERDTreeToggle<CR>
 nmap <Leader>nt :NERDTreeFind<CR>
 map <Leader>tw :DjangoTestApp<CR>
 map <Leader>tf :DjangoTestFile<CR>
@@ -370,10 +362,6 @@ inoremap jk <ESC>
 nnoremap<Leader>tn :set relativenumber!<CR>
 nnoremap <Leader>fr :call VisualFindAndReplace()<CR>
 xnoremap <Leader>fr :call VisualFindAndReplaceWithSelection()<CR>
-imap <C-e> <C-o>$
-imap <C-a> <C-o>0
-imap <C-f> <C-o>l
-imap <C-b> <C-o>h
 nnoremap <Leader>W :%s/\s\+$//<CR>:let @/=''<CR>
 
 nmap <Leader>tm :RunSingleQunitTest<CR>
