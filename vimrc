@@ -44,15 +44,11 @@ NeoBundle 'wellle/targets.vim'
 NeoBundle 'thinca/vim-qfreplace'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'othree/html5-syntax.vim'
-" NeoBundle '~/dotfiles/vim/my-plugins/nerd-ack', {'type': 'nosync'}
-" NeoBundle '~/dotfiles/vim/my-plugins/tmux-navigator', {'type': 'nosync'}
-" NeoBundle '~/dotfiles/vim/my-plugins/vim-ack', {'type': 'nosync'}
-" NeoBundle '~/dotfiles/vim/my-plugins/vim-grep-quickfix', {'type': 'nosync'}
-" NeoBundle '~/dotfiles/vim/my-plugins/vim-wiki-links', {'type': 'nosync'}
+
 call neobundle#end()
 filetype  plugin on
 filetype  indent on
-" set t_Co=256
+set t_Co=16
 syntax on
 set autoindent                         " Copy indent from current line
 set autoread                           " Read open files again when changed outside Vim
@@ -112,7 +108,9 @@ if has("autocmd")
 endif
 
 set laststatus=2                                    " Make the second to last line of vim our status line
-let g:airline#extensions#tabline#enabled = 1        " JMJ - show tabs
+let g:airline_theme='solarized'
+let g:airline#extensions#tabline#enabled = 1        " Show tabs
+let g:airline_powerline_fonts = 1
 nnoremap <Leader>fr :call VisualFindAndReplace()<CR>
 xnoremap <Leader>fr :call VisualFindAndReplaceWithSelection()<CR>
 nnoremap Y y$
