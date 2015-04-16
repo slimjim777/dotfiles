@@ -26,6 +26,7 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'othree/html5'
 NeoBundle 'jeetsukumaran/vim-buffergator'
+NeoBundle 'mustache/vim-mustache-handlebars'
 call neobundle#end()
 
 let mapleader = "\<Space>"
@@ -67,13 +68,7 @@ set number                             " Show line numbers
 set pastetoggle=<F3>
 set nofoldenable
 
-if has("autocmd")
-  autocmd BufReadPost *
-        \ if line("'\"") > 0 && line("'\"") <= line("$") |
-        \   exe "normal! g`\"" |
-        \ endif
-endif
-
+" Theme settings
 set t_Co=16
 syntax enable
 set background=dark
@@ -83,13 +78,12 @@ let g:solarized_visibility = "high"
 let g:solarized_contrast = "high"
 let g:mustache_abbreviations = 1
 
-if has("autocmd")
-  au BufNewFile,BufRead *.{mustache,handlebars,hbs}{,.erb} set filetype=html syntax=mustache | runtime! ftplugin/mustache.vim ftplugin/mustache*.vim ftplugin/mustache/*.vim
-endif
+" Make the second to last line of vim our status line
+set laststatus=2
 
-set laststatus=2                                    " Make the second to last line of vim our status line
+" airline: use solarized theme and hide the tabs
 let g:airline_theme='solarized'
-let g:airline#extensions#tabline#enabled = 0        " JMJ - hide tabs
+let g:airline#extensions#tabline#enabled = 0
 let g:airline_powerline_fonts = 1
 
 " Syntastic
@@ -97,14 +91,10 @@ let g:syntastic_check_on_open=1                   " check for errors when file i
 let g:syntastic_loc_list_height=5                 " the height of the error list defaults to 10
 let g:syntastic_python_checkers = ['flake8']      " sets flake8 as the default for checking python files
 let g:syntastic_javascript_checkers = ['jshint']  " sets jshint as our javascript linter
-" let g:syntastic_filetype_map = { 'handlebars.html': 'handlebars' }
-"let g:syntastic_mode_map={ 'mode': 'active',
-"                     \ 'active_filetypes': [],
-"                     \ 'passive_filetypes': ['html', 'handlebars'] }
 
 " Setup some default ignores
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|venv|node_modules|bower_components|\_site)$',
   \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
 \}
 
@@ -128,7 +118,7 @@ let g:NERDTreeMapJumpNextSibling = ''
 let g:NERDTreeMapJumpPrevSibling = ''
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#popup_on_dot = 1
-" let g:jedi#rename_command = "<leader>rn"
+let g:jedi#rename_command = "<leader>rn"
 
 " Cycle through buffers
 nnoremap <C-n> :bnext<CR>
@@ -150,7 +140,7 @@ nmap Q gqap
 
 nnoremap <Esc><Esc> :nohlsearch<CR>
 
-
+" NERD Tree shortcuts
 map <Leader>d :NERDTreeToggle<CR>
 map <C-e> :NERDTreeToggle<CR>
 nmap <Leader>nt :NERDTreeFind<CR>
